@@ -1,0 +1,53 @@
+<video id="meuVideo" width="800" height="450" controls controlsList="nodownload">
+    <source src="http://files.cod3r.com.br/curso-web/video.mp4" type="video/mp4">
+    Seu browser não suporta vídeo no formato mp4.
+</video>
+
+<div wm-progresso="meuVideo" class="progresso">
+    <div></div>
+</div>
+
+<div>
+    <button wm-play="meuVideo">Play</button>
+    <button wm-pause="meuVideo">Pause</button>
+</div>
+
+<style>
+    .progresso {
+        height: 20px;
+        width: 500px;
+        margin: 20px;
+        border: solid 1px #444;
+    }
+
+    .progresso > div {
+        background-color: red;
+        color: #fff;
+        text-align: right;
+        height: 100%;
+        line-height: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        width: 0%;
+    }
+</style>
+
+<script>
+    const video = document.getElementById('meuVideo')
+    const pauseButton = document.querySelector('[wm-pause]')
+    const playButton = document.querySelector('[wm-play]')
+    const divProgresso = document.querySelector('[wm-progresso] > div')
+
+    pauseButton.addEventListener('click', video.pause)
+    playButton.addEventListener('click', () => { 
+        video.play()
+        video.addEventListener('timeupdate', videoPercent)
+    })
+
+    function videoPercent() {
+        const percentual = Math.floor((video.currentTime / video.duration) * 100)
+
+        divProgresso.style.width = `${percentual}%` 
+        divProgresso.innerHTML = `${percentual}%`
+    }
+</script>
