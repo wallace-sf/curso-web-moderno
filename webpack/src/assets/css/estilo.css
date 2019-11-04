@@ -1,3 +1,7 @@
 body {
-    background: linear-gradient(270deg, #999, #fafafa, #084513);
+    background-color: #04f;
+    background-image: url(../imgs/logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
 }

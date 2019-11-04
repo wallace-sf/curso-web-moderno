@@ -26,6 +26,10 @@ module.exports = {
             new OptimizeCSSAssetsPlugin({})
         ]
     },
+    devServer: {
+        contentBase: "./public",
+        port: 9000
+    },
     module: {
         rules: [
             {
@@ -36,6 +40,10 @@ module.exports = {
                     'css-loader', // Interpreta @importa, url() etc...
                     'sass-loader',
                 ]
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: ['file-loader']
             }
         ]
     }
