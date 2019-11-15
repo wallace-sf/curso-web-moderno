@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Modificando HTML #03</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+    <script src='js/jquery.js'></script>
+</head>
+
+<body class='conteudo exercicio'>
+    <h1>Modificando HTML #03</h1>
+    <div id='conteudo'></div>
+
+    <script>
+        $(function () {
+            const alunos = [
+                    { nome: 'Ana', nota: 9.1 },
+                    { nome: 'Bianca', nota: 8.4 },
+                    { nome: 'Carlos', nota: 7.6 },
+                    { nome: 'Julia', nota: 9.7 }
+                ]
+
+            function criaColunasTabela() {
+                return alunos.map(aluno => {
+                    const nomeAluno = $('<td>').html(aluno.nome).css('border', 'solid 3px white')
+                    const notaAluno = $('<td>').html(aluno.nota).css('border', 'solid 3px white')
+
+                    return $('<tr>').append(nomeAluno, notaAluno)
+                })
+            }
+
+            function insereTabela() {
+                const tabela = $('<table>').append(criaColunasTabela()).css('border', 'solid 3px white')
+                
+                $('#conteudo').html(tabela)
+            }
+
+            insereTabela()
+        })
+    </script>
+</body>

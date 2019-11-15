@@ -26,6 +26,30 @@
     <span id='resultado'></span>
 
     <script>
-        // ...
+        function exibirDadosEventos(e) {
+            $resultado = $('#resultado')
+
+            $div1 = $('<div>')
+            $div2 = $('<div>')
+            $rt = e.relatedTarget ? e.relatedTarget.tagName : null
+            
+            $resultado.empty()
+            $resultado.append($div1, $div2)
+            $div1.append(e.target.id)
+            $div1.append(`<br>${$rt}`)
+            $div1.append(`<br>${e.type}`)
+            $div1.append(`<br>which: ${e.which}`)
+            $div1.append(`<br>meta: ${e.metaKey}`)
+
+            $div2.append(`pageX: ${e.pageX}`)
+            $div2.append(`<br>pageY: ${e.pageY}`)
+
+            const obs = e.data ? e.data.obs : null
+            
+            $div2.append(`<br>obs : ${obs}`)
+        }
+
+        $('#div1, #div2').on('mouseenter mouseleave',  {obs : 'Funciona!'}, exibirDadosEventos)
+        $('input').keyup({obs : 'Funciona!'}, exibirDadosEventos)
     </script>
 </body>

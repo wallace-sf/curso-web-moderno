@@ -10,6 +10,7 @@
         div {
             text-align: center;
         }
+
         button {
             font-size: 1.8em;
             margin: 10px;
@@ -22,7 +23,17 @@
     <button>Iniciar</button>
     <div id='animar'>Animar!</div>
 
-    <script>        
-        // ...
+    <script>
+        $('button').click(e => {
+            const animatedElement = $('#animar')
+            const timeAnimation = 500
+
+            // animatedElement.hide(timeAnimation).show(timeAnimation)
+            // animatedElement.toggle(timeAnimation).toggle(timeAnimation)
+            // animatedElement.fadeOut(timeAnimation).fadeIn(timeAnimation)
+            // animatedElement.fadeToggle(timeAnimation).fadeToggle(timeAnimation)
+            // animatedElement.slideUp(timeAnimation).slideDown(timeAnimation)
+            animatedElement.slideToggle(timeAnimation).slideToggle(timeAnimation)
+        })
     </script>
 </body>
