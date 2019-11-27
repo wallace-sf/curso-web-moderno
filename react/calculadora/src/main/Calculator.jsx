@@ -9,7 +9,9 @@ export default class Calculator extends Component {
     state = {
         oldValueDisplay: "0",
         currentValueDisplay: "0",
-        operationExists: false
+        operationExists: false,
+        executeOperation: false,
+        previousOperation: null
     }
 
     addDigit = (digit) => {
@@ -22,43 +24,61 @@ export default class Calculator extends Component {
     }
 
     clearMemory = () => this.setState(
-        { currentValueDisplay: "0", oldValueDisplay: "0" });
+        { currentValueDisplay: "0", oldValueDisplay: "0", executeOperation: false });
 
     setOperation = (operation) => {
-        const oldValueDisplay = Number(this.state.oldValueDisplay);
-        const currentValueDisplay = Number(this.state.currentValueDisplay);
+        const isEqual = operation === '=' ? this.state.previousOperation : operation
 
-        if (operation) {
+        if (this.state.executeOperation === true
+            && (this.state.previousOperation === operation
+                || operation === '=')) {
             this.setState({
-                oldValueDisplay: oldValueDisplay + currentValueDisplay,
-                currentValueDisplay: oldValueDisplay + currentValueDisplay
+                oldValueDisplay: this.getOperation(operation),
+                currentValueDisplay: this.getOperation(operation)
+            }, console.log(this.getOperation(this.state.previousOperation)));
+        } else {
+            this.setState({
+                oldValueDisplay: this.state.currentValueDisplay,
+                executeOperation: true
             });
         }
 
-        this.setState({ operationExists: true })
+        this.setState({ operationExists: true, previousOperation: isEqual }/* ,
+            console.log(`Atual: ${operation} Anterior: ${this.state.previousOperation}`) */)
+    }
+
+    getOperation = (operation) => {
+        const oldValueDisplay = Number(this.state.oldValueDisplay);
+        const currentValueDisplay = Number(this.state.currentValueDisplay);
+
+        return operation === '+' ? oldValueDisplay + currentValueDisplay :
+            operation === '-' ? oldValueDisplay - currentValueDisplay :
+                operation === '*' ? oldValueDisplay * currentValueDisplay :
+                    operation === '/' ? oldValueDisplay / currentValueDisplay :
+                        this.getOperation(this.state.previousOperation)
     }
 
     render() {
         return (
             <div className="calculator">
                 <Display value={this.state.currentValueDisplay} />
-                <Button label="AC" click={this.clearMemory} />
+                <Button label="AC" click={this.clearMemory} triple />
                 <Button label="/" click={this.setOperation} operation />
                 <Button label="7" click={this.addDigit} />
                 <Button label="8" click={this.addDigit} />
                 <Button label="9" click={this.addDigit} />
-                <Button label="*" click={this.setOperation} />
+                <Button label="*" click={this.setOperation} operation />
                 <Button label="4" click={this.addDigit} />
                 <Button label="5" click={this.addDigit} />
                 <Button label="6" click={this.addDigit} />
-                <Button label="-" click={this.setOperation} />
+                <Button label="-" click={this.setOperation} operation />
                 <Button label="1" click={this.addDigit} />
                 <Button label="2" click={this.addDigit} />
                 <Button label="3" click={this.addDigit} />
-                <Button label="+" click={this.setOperation} />
-                <Button label="0" click={this.addDigit} />
+                <Button label="+" click={this.setOperation} operation />
+                <Button label="0" click={this.addDigit} double />
                 <Button label="." click={this.addDigit} />
-                <Button label="=" click={this.setOperation} />
+                <Button label="=" click={this.setOperation} operation />
             </div>
         )
     }
