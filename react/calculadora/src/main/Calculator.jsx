@@ -4,38 +4,45 @@ import './Calculator.css';
 import Display from '../components/Display'
 import Button from '../components/Button'
 
+const initialState = {
+    oldValueDisplay: "0",
+    currentValueDisplay: "0",
+    operationExists: false,
+    executeOperation: false,
+    previousOperation: null,
+    lastCharacter: null
+}
+
 export default class Calculator extends Component {
 
-    state = {
-        oldValueDisplay: "0",
-        currentValueDisplay: "0",
-        operationExists: false,
-        executeOperation: false,
-        previousOperation: null
-    }
+    state = { ...initialState }
+
+    clearMemory = () => this.setState({ ...initialState });
 
     addDigit = (digit) => {
         if (this.state.currentValueDisplay === "0" || this.state.operationExists) {
             this.setState({ currentValueDisplay: digit, operationExists: false });
         } else {
-            const currentValueDisplay = this.state.currentValueDisplay + digit;
-            this.setState({ currentValueDisplay });
+            if (!this.state.currentValueDisplay.includes('.') || digit !== '.') {
+                const currentValueDisplay = this.state.currentValueDisplay + digit;
+                this.setState({ currentValueDisplay });
+            }
         }
+
+        this.setState({ lastCharacter: digit })
     }
 
-    clearMemory = () => this.setState(
-        { currentValueDisplay: "0", oldValueDisplay: "0", executeOperation: false });
 
     setOperation = (operation) => {
         const isEqual = operation === '=' ? this.state.previousOperation : operation
 
-        if (this.state.executeOperation === true
-            && (this.state.previousOperation === operation
-                || operation === '=')) {
+        if (this.state.executeOperation && (operation === '='
+            || this.state.lastCharacter !== operation)) {
+            console.log(this.state.previousOperation, this.state.lastCharacter)
             this.setState({
                 oldValueDisplay: this.getOperation(operation),
                 currentValueDisplay: this.getOperation(operation)
-            }, console.log(this.getOperation(this.state.previousOperation)));
+            });
         } else {
             this.setState({
                 oldValueDisplay: this.state.currentValueDisplay,
@@ -43,19 +50,28 @@ export default class Calculator extends Component {
             });
         }
 
-        this.setState({ operationExists: true, previousOperation: isEqual }/* ,
-            console.log(`Atual: ${operation} Anterior: ${this.state.previousOperation}`) */)
+        this.setState({
+            operationExists: true, previousOperation: isEqual,
+            lastCharacter: operation
+        });
     }
 
     getOperation = (operation) => {
         const oldValueDisplay = Number(this.state.oldValueDisplay);
         const currentValueDisplay = Number(this.state.currentValueDisplay);
 
-        return operation === '+' ? oldValueDisplay + currentValueDisplay :
-            operation === '-' ? oldValueDisplay - currentValueDisplay :
-                operation === '*' ? oldValueDisplay * currentValueDisplay :
-                    operation === '/' ? oldValueDisplay / currentValueDisplay :
-                        this.getOperation(this.state.previousOperation)
+        switch (operation) {
+            case '+':
+                return oldValueDisplay + currentValueDisplay;
+            case '-':
+                return oldValueDisplay - currentValueDisplay;
+            case '*':
+                return oldValueDisplay * currentValueDisplay;
+            case '/':
+                return oldValueDisplay / currentValueDisplay;
+            default:
+                return this.getOperation(this.state.previousOperation);
+        }
     }
 
     render() {
