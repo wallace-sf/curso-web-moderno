@@ -11,7 +11,9 @@ const initialState = {
     executeOperation: false,
     previousOperation: null,
     lastCharacter: null
-}
+};
+
+const operations = ['+', '-', '*', '/', '='];
 
 export default class Calculator extends Component {
 
@@ -37,8 +39,7 @@ export default class Calculator extends Component {
         const isEqual = operation === '=' ? this.state.previousOperation : operation
 
         if (this.state.executeOperation && (operation === '='
-            || this.state.lastCharacter !== operation)) {
-            console.log(this.state.previousOperation, this.state.lastCharacter)
+            || !operations.includes(this.state.lastCharacter))) {
             this.setState({
                 oldValueDisplay: this.getOperation(operation),
                 currentValueDisplay: this.getOperation(operation)
