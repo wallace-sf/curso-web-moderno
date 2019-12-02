@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "name": "Rodrigo Faro",
+      "email": "rodrigo_faro@exemplo.com",
+      "id": 2
+    },
+    {
+      "name": "Mano Brown",
+      "email": "mano_brown@racionais.com",
+      "id": 3
+    }
+  ]
+}
